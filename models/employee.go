@@ -34,7 +34,7 @@ type Employee struct {
 	Kis              string         `json:"kis"`
 	Kpj              string         `json:"kpj"`
 	PtkpID           int            `json:"ptkpid"`
-	Ptkp             PTKP           `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Ptkp             Ptkp           `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Phone            string         `json:"phone"`
 	Birthplace       string         `json:"birthplace"`
 	Birthdate        string         `json:"birthdate"`

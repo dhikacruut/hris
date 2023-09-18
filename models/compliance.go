@@ -22,7 +22,7 @@ type SalarySlipDetail struct {
 	Value        int64  `json:"Value" gorm:"not null"`
 }
 
-type PTKP struct {
+type Ptkp struct {
 	gorm.Model
 	Name  string `json:"name" gorm:"unique"`
 	Value int64  `json:"Value"`

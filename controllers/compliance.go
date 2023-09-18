@@ -103,7 +103,7 @@ func GenerateSlip(c *gin.Context) {
 
 	var result []models.Employee
 
-	if err := db.DB.Joins("JOIN ptkps ON employees.ptkp_id = ptkps.id").Find(&result).Error; err != nil {
+	if err := db.DB.Joins("Ptkp").Find(&result).Error; err != nil {
 		log.Printf("Error querying employees: %s\n", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

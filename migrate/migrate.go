@@ -18,7 +18,7 @@ func main() {
 		&models.Division{},
 		&models.Department{},
 		&models.Supervision{},
-		&models.PTKP{},
+		&models.Ptkp{},
 		&models.User{},
 		&models.Employee{},
 		&models.SalarySlip{},
