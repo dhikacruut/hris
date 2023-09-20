@@ -273,9 +273,13 @@ func SalarySlipUpdate(c *gin.Context) {
 	}
 
 	// Update
-	db.DB.Model(&salarySlip).Updates(models.SalarySlip{
+
+	if err := db.DB.Model(&salarySlip).Updates(models.SalarySlip{
 		Salary: body.Salary,
-	})
+	}).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	// Respond
 	c.JSON(http.StatusOK, gin.H{
@@ -318,11 +322,14 @@ func SalarySlipDetailUpdate(c *gin.Context) {
 	}
 
 	// Update
-	db.DB.Model(&salarySlipDetail).Updates(models.SalarySlipDetail{
+	if err := db.DB.Model(&salarySlipDetail).Updates(models.SalarySlipDetail{
 		Name:  body.Name,
 		Type:  body.Type,
 		Value: body.Value,
-	})
+	}).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	// Respond
 	c.JSON(http.StatusOK, gin.H{
