@@ -197,6 +197,7 @@ func SalarySlipCreate(c *gin.Context) {
 	//END INSERT HEADER
 }
 
+// Create Detail
 func SalarySlipDetailCreate(c *gin.Context) {
 	// Get data body
 	var body models.SalarySlipDetail
@@ -372,5 +373,98 @@ func SalarySlipDetailDelete(c *gin.Context) {
 	// Respond
 	c.JSON(http.StatusOK, gin.H{
 		"message": "delete success",
+	})
+}
+
+// Approve HR
+func ApproveSlipHR(c *gin.Context) {
+	// Get id
+	id := c.Param("id")
+
+	// Get data body
+	var body models.SalarySlip
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// Validasi status
+	if body.Status != 1 && body.Status != 9 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Request Not Valid"})
+		return
+	}
+
+	// Find the data
+	var salarySlip models.SalarySlip
+	var err error
+	if body.Status == 1 {
+		err = db.DB.Where("status = 0").First(&salarySlip, "id = ?", id).Error
+	} else {
+		err = db.DB.Where("status = 2").First(&salarySlip, "id = ?", id).Error
+	}
+
+	if err != nil {
+		errors.Is(err, gorm.ErrRecordNotFound)
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "record not found",
+		})
+		return
+	}
+
+	// Update
+	if err := db.DB.Model(&salarySlip).Updates(models.SalarySlip{
+		Status: body.Status,
+	}).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Respond
+	c.JSON(http.StatusOK, gin.H{
+		"data": salarySlip,
+	})
+}
+
+// Approve Finance
+func ApproveSlipFinance(c *gin.Context) {
+	// Get id
+	id := c.Param("id")
+
+	// Get data body
+	var body models.SalarySlip
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// Validasi status
+	if body.Status != 2 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Request Not Valid"})
+		return
+	}
+
+	// Find the data
+	var salarySlip models.SalarySlip
+	err := db.DB.Where("status = 1").First(&salarySlip, "id = ?", id).Error
+
+	if err != nil {
+		errors.Is(err, gorm.ErrRecordNotFound)
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "record not found",
+		})
+		return
+	}
+
+	// Update
+	if err := db.DB.Model(&salarySlip).Updates(models.SalarySlip{
+		Status: body.Status,
+	}).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Respond
+	c.JSON(http.StatusOK, gin.H{
+		"data": salarySlip,
 	})
 }

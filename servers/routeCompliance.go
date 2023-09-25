@@ -14,6 +14,8 @@ func InitializeRoutesCompliance(g *gin.RouterGroup) {
 		g.POST("/CreateSlipDetail/", controllers.SalarySlipDetailCreate)
 		g.PUT("/UpdateSlip/:id", controllers.SalarySlipUpdate)
 		g.PUT("/UpdateSlipDetail/:id", controllers.SalarySlipDetailUpdate)
+		g.PUT("/ApproveHR/:id", controllers.ApproveSlipHR)
+		g.PUT("/ApproveFinance/:id", controllers.ApproveSlipFinance)
 		g.DELETE("/DeleteSlip/:id", controllers.SalarySlipDelete)
 		g.DELETE("/DeleteSlipDetail/:id", controllers.SalarySlipDetailDelete)
 	}
